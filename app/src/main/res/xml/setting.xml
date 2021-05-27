@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <PreferenceCategory android:title="어플">
+
+                <SwitchPreference
+                    android:key="ASMR"
+                    android:title="백색소음 / ASMR"
+                    android:background="@drawable/my_btn_toggle" />
+                <SwitchPreference
+                    android:key="TimeNoti"
+                    android:title="시간 알리미" />
+                <SwitchPreference
+                    android:key="Rock"
+                    android:title="잠금 기능" />
+
+        </PreferenceCategory>
+        <PreferenceCategory android:title="화면">
+
+               <SwitchPreference
+                    android:key="Dark"
+                    android:title="다크모드" />
+
+        </PreferenceCategory>
+
+</PreferenceScreen>
