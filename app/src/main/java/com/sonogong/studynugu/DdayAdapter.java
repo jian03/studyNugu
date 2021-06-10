@@ -18,6 +18,16 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.ViewHolder> {
     private ArrayList<String> mDataTitle = null;
     private ArrayList<String> mDataDday = null;
 
+    private OnItemLongClickListener mLongListener = null;
+
+    public interface OnItemLongClickListener{
+        void onItemLongClick(View v, int pos);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+        this.mLongListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView titleItem;
         TextView ddayItem;
@@ -27,6 +37,17 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.ViewHolder> {
 
             titleItem = itemView.findViewById(R.id.titleItem);
             ddayItem = itemView.findViewById(R.id.ddayItem);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener(){
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        mLongListener.onItemLongClick(v, pos);
+                    }
+                    return true;
+                }
+            });
         }
     }
 

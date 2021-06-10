@@ -6,20 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,17 +35,6 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dday, container, false);
 
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
-        display.getMetrics(outMetrics);
-
-        float density = getResources().getDisplayMetrics().density;
-        float dpHeight = outMetrics.heightPixels / density;
-        float dpWidth = outMetrics.widthPixels / density;
-
-        //dp별 layout 별도 적용
-        Log.d("Device dp","dpHeight : : "+dpHeight+"  dpWidth : "+dpWidth+"  density : "+density);
-
         write = v.findViewById(R.id.floatingActionButton);
         write.setOnClickListener(this);
 
@@ -60,14 +47,25 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
         dateList = (ArrayList<String>) ddayDAO.findDate();
 
         //dday 계산한 결과값을 넣어줌
-        ArrayList<String> temp = new ArrayList<String>();
-        temp = ddayCal(dateList);
+        ArrayList<String> temp = new ArrayList<>();
+        try {
+            temp = ddayCal(dateList);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         RecyclerView recyclerView = v.findViewById(R.id.DdayList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         DdayAdapter adapter = new DdayAdapter(titleList, temp);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemLongClickListener(new DdayAdapter.OnItemLongClickListener(){
+            @Override
+            public void onItemLongClick(View v, int pos) {
+                Toast.makeText(getActivity(), "삭제 만들 예정", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return v;
 
@@ -83,23 +81,27 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public ArrayList<String> ddayCal(ArrayList<String> ddayList){
+    public ArrayList<String> ddayCal(ArrayList<String> ddayList) throws ParseException {
         ArrayList<String> cal = new ArrayList<String>();
         for(int i = 0; i < ddayList.size(); i++) {
             //dday 계산
-            String dday = "";
-            Calendar calendar = Calendar.getInstance();
-            dday += calendar.get(Calendar.YEAR);
-            if ((calendar.get(Calendar.MONTH)+1) < 10)
-                dday += "0" + (calendar.get(Calendar.MONTH)+1);
+            Calendar todayCal = Calendar.getInstance();
+            Calendar ddayCal = Calendar.getInstance();
+            int year = Integer.parseInt(ddayList.get(i).substring(0, 4));
+            int month = Integer.parseInt(ddayList.get(i).substring(4, 6))-1;
+            int day = Integer.parseInt(ddayList.get(i).substring(6, 8));
+            ddayCal.set(year, month, day);
+
+            long today = todayCal.getTimeInMillis()/86400000;
+            long dday = ddayCal.getTimeInMillis()/86400000;
+            long count = dday - today;
+
+            if(count == 0)
+                cal.add(i, "Today!");
+            else if(count < 0)
+                cal.add(i, "D+" + Math.abs(count));
             else
-                dday += (calendar.get(Calendar.MONTH)+1);
-            if (calendar.get(Calendar.DATE) < 10)
-                dday += "0" + calendar.get(Calendar.DATE);
-            else
-                dday += calendar.get(Calendar.DATE);
-            int temp = Integer.parseInt(ddayList.get(i)) - Integer.parseInt(dday);
-            cal.add(i, "D-" + temp);
+                cal.add(i, "D-" + count);
         }
         return cal;
     }
