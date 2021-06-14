@@ -16,9 +16,13 @@ public interface DdayDAO {
     @Query("SELECT date FROM dday")
     List<String> findDate();
 
+    @Query("DELETE FROM dday WHERE ddaytitle IN(:titles)")
+    void findAndDELETE(String titles);
+
     @Insert
     void insert(Dday dday);
 
     @Delete
     void delete(Dday dday);
+
 }
