@@ -18,6 +18,19 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.ViewHolder> {
     private ArrayList<String> mDataTitle = null;
     private ArrayList<String> mDataDday = null;
 
+    public ArrayList<String> getmDataTitle() {
+        return mDataTitle;
+    }
+    public void setmDataTitle(ArrayList<String> mDataTitle) {
+        this.mDataTitle = mDataTitle;
+    }
+    public ArrayList<String> getmDataDday() {
+        return mDataDday;
+    }
+    public void setmDataDday(ArrayList<String> mDataDday) {
+        this.mDataDday = mDataDday;
+    }
+
     private OnItemLongClickListener mLongListener = null;
 
     public interface OnItemLongClickListener{

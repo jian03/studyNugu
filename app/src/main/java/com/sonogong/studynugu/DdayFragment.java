@@ -1,5 +1,7 @@
 package com.sonogong.studynugu;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DdayFragment extends Fragment implements View.OnClickListener {
+public class DdayFragment extends Fragment {
 
     ViewGroup viewGroup;
     FloatingActionButton write;
@@ -36,7 +38,6 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_dday, container, false);
 
         write = v.findViewById(R.id.floatingActionButton);
-        write.setOnClickListener(this);
 
         //db에서 data를 arraylist로 넘겨줌
         ArrayList<String> titleList, dateList;
@@ -60,25 +61,45 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
         DdayAdapter adapter = new DdayAdapter(titleList, temp);
         recyclerView.setAdapter(adapter);
 
+        write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DdayAddDialog dialog = new DdayAddDialog();
+                adapter.notifyDataSetChanged();
+                dialog.show(getActivity().getSupportFragmentManager(), "tag");
+            }
+        });
+
         adapter.setOnItemLongClickListener(new DdayAdapter.OnItemLongClickListener(){
             @Override
             public void onItemLongClick(View v, int pos) {
-                Toast.makeText(getActivity(), "삭제 만들 예정", Toast.LENGTH_SHORT).show();
+                String title = adapter.getmDataTitle().get(pos);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("삭제");
+                builder.setMessage(title + "을(를) 삭제하시겠습니까?");
+                builder.setPositiveButton("예",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                DdayDatabase db = Room.databaseBuilder(getActivity(), DdayDatabase.class, "dday-db")
+                                        .allowMainThreadQueries().build();
+                                ddayDAO = db.ddayDAO();
+                                ddayDAO.findAndDELETE(title);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.show();
             }
         });
 
         return v;
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.floatingActionButton:
-                DdayAddDialog dialog = new DdayAddDialog();
-                dialog.show(getActivity().getSupportFragmentManager(), "tag");
-                break;
-        }
     }
 
     public ArrayList<String> ddayCal(ArrayList<String> ddayList) throws ParseException {
@@ -105,4 +126,5 @@ public class DdayFragment extends Fragment implements View.OnClickListener {
         }
         return cal;
     }
+
 }
