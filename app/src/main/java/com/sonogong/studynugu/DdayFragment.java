@@ -65,7 +65,6 @@ public class DdayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DdayAddDialog dialog = new DdayAddDialog();
-                adapter.notifyDataSetChanged();
                 dialog.show(getActivity().getSupportFragmentManager(), "tag");
             }
         });
@@ -84,7 +83,6 @@ public class DdayFragment extends Fragment {
                                         .allowMainThreadQueries().build();
                                 ddayDAO = db.ddayDAO();
                                 ddayDAO.findAndDELETE(title);
-                                adapter.notifyDataSetChanged();
                                 Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
                             }
                         });
