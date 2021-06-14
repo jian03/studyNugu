@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DdayAddDialog extends DialogFragment implements View.OnClickListener {
@@ -27,7 +28,9 @@ public class DdayAddDialog extends DialogFragment implements View.OnClickListene
     private Button okBtn, cancleBtn, dateBtn;
     Date mDate = new Date(System.currentTimeMillis());
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년MM월dd일");
+    SimpleDateFormat sdf_today = new SimpleDateFormat("yyyyMMdd");
     String getDay = simpleDateFormat.format(mDate);
+    private String dday = sdf_today.format(mDate);
 
     public DdayAddDialog(){
 
@@ -60,7 +63,7 @@ public class DdayAddDialog extends DialogFragment implements View.OnClickListene
 
     private DdayDAO ddayDAO;
     private int i = 0;
-    private String dday = "";
+
 
     @Override
     public void onClick(View v) {
@@ -69,22 +72,24 @@ public class DdayAddDialog extends DialogFragment implements View.OnClickListene
                 DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dday = "";
                         dday += year;
-                        if (month < 10)
-                            dday += "0" + month;
+                        if (month+1 < 10)
+                            dday += "0" + (month+1);
                         else
-                            dday += month;
+                            dday += (month+1);
                         if (dayOfMonth < 10)
                             dday += "0" + dayOfMonth;
                         else
                             dday += dayOfMonth;
 
-                        today.setText(year + "년" + month + "월" + dayOfMonth + "일");
+                        today.setText(year + "년" + (month+1) + "월" + dayOfMonth + "일");
 
                     }
                 };
+                Calendar calendar = Calendar.getInstance();
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), R.style.DatePickerStyle,
-                        listener, 2021, 6, 24);
+                        listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
                 dialog.show();
                 break;
             }

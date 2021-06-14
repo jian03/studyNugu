@@ -6,25 +6,37 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="180dp"
         android:layout_height="150dp"
         android:layout_margin="8dp"
-        android:background="@drawable/all_corner_radius"
-        android:orientation="vertical">
+        android:background="@drawable/all_corner_radius">
 
         <TextView
             android:id="@+id/titleItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="item"
-            android:textSize="32sp" />
+            android:text="title"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.773" />
 
         <TextView
             android:id="@+id/ddayItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="item"
-            android:textSize="32sp" />
-    </LinearLayout>
+            android:text="D-day"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.261" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
