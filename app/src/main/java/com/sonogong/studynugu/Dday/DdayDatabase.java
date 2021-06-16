@@ -1,4 +1,4 @@
-package com.sonogong.studynugu;
+package com.sonogong.studynugu.Dday;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

@@ -1,4 +1,4 @@
-package com.sonogong.studynugu;
+package com.sonogong.studynugu.Dday;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
