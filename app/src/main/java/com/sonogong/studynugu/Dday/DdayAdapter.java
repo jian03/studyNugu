@@ -1,4 +1,4 @@
-package com.sonogong.studynugu;
+package com.sonogong.studynugu.Dday;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.sonogong.studynugu.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -64,7 +66,7 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.ViewHolder> {
         }
     }
 
-    DdayAdapter(ArrayList<String> title, ArrayList<String> dday){
+    public DdayAdapter(ArrayList<String> title, ArrayList<String> dday){
         mDataTitle = title;
         mDataDday = dday;
     }

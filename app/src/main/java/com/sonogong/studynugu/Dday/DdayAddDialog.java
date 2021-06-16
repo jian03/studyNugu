@@ -1,4 +1,4 @@
-package com.sonogong.studynugu;
+package com.sonogong.studynugu.Dday;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -15,6 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
+
+import com.sonogong.studynugu.Dday.Dday;
+import com.sonogong.studynugu.Dday.DdayDAO;
+import com.sonogong.studynugu.Dday.DdayDatabase;
+import com.sonogong.studynugu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
