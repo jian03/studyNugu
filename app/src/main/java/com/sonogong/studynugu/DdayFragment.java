@@ -76,7 +76,7 @@ public class DdayFragment extends Fragment {
                 String title = adapter.getmDataTitle().get(pos);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("삭제");
-                builder.setMessage(title + "을(를) 삭제하시겠습니까?");
+                builder.setMessage(KoreanUtil.getComleteWordByJongsung(title, "을", "를") + " 삭제하시겠습니까?");
                 builder.setPositiveButton("예",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -124,6 +124,23 @@ public class DdayFragment extends Fragment {
                 cal.add(i, "D-" + count);
         }
         return cal;
+    }
+
+    public static class KoreanUtil {
+        public static final String getComleteWordByJongsung(String name, String firstValue, String secondValue) {
+
+            char lastName = name.charAt(name.length() - 1);
+
+            // 한글의 제일 처음과 끝의 범위밖일 경우는 오류
+            if (lastName < 0xAC00 || lastName > 0xD7A3) {
+                return name;
+            }
+
+            String seletedValue = (lastName - 0xAC00) % 28 > 0 ? firstValue : secondValue;
+
+            return name+seletedValue;
+        }
+
     }
 
 }
