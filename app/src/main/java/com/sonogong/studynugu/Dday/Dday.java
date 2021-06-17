@@ -33,4 +33,5 @@ public class Dday {
     public void setDate(String date) {
         this.date = date;
     }
+
 }
