@@ -1,5 +1,7 @@
 package com.sonogong.studynugu.timer;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -48,8 +50,8 @@ public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.View
         ViewHolder(View itemView){
             super(itemView);
 
-            titleItem = itemView.findViewById(R.id.titleItem);
-            timeItem = itemView.findViewById(R.id.ddayItem);
+            titleItem = itemView.findViewById(R.id.titleItemSW);
+            timeItem = itemView.findViewById(R.id.timeItemSW);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
@@ -73,7 +75,13 @@ public class StopwatchAdapter extends RecyclerView.Adapter<StopwatchAdapter.View
     @NotNull
     @Override
     public StopwatchAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return null;
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.stopwatch_item, parent, false);
+        StopwatchAdapter.ViewHolder vh = new StopwatchAdapter.ViewHolder(view);
+
+        return vh;
     }
 
     @Override

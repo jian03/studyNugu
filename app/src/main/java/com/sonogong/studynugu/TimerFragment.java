@@ -8,24 +8,27 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.sonogong.studynugu.Dday.DdayDatabase;
 import com.sonogong.studynugu.timer.Stopwatch;
+import com.sonogong.studynugu.timer.StopwatchAdapter;
 import com.sonogong.studynugu.timer.StopwatchDAO;
 import com.sonogong.studynugu.timer.StopwatchDatabase;
+
+import java.util.ArrayList;
 
 public class TimerFragment extends Fragment {
 
@@ -74,7 +77,11 @@ public class TimerFragment extends Fragment {
                         builder.setPositiveButton("예",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        saveTime(title, stopwatch.getText().toString());
+                                        if (countTitle(title) == 1){
+                                            updateTime(title, stopwatch.getText().toString());
+                                        }else{
+                                            saveTime(title, stopwatch.getText().toString());
+                                        }
                                         stopwatch.setText("00:00:00");
                                         cur_Status = Init;
                                         return;
@@ -110,6 +117,20 @@ public class TimerFragment extends Fragment {
             }
         });
 
+        //db에서 data를 arraylist로 넘겨줌
+        ArrayList<String> titleList, timeList;
+        StopwatchDatabase swdb = Room.databaseBuilder(getActivity(), StopwatchDatabase.class, "sw-db")
+                .allowMainThreadQueries().build();
+        stopwatchDAO = swdb.stopwatchDAO();
+        titleList = (ArrayList<String>)stopwatchDAO.findTitle();
+        timeList = (ArrayList<String>)stopwatchDAO.findTime();
+
+        RecyclerView recyclerView = v.findViewById(R.id.timerList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        StopwatchAdapter adapter = new StopwatchAdapter(titleList, timeList);
+        recyclerView.setAdapter(adapter);
+
         return v;
     }
 
@@ -139,6 +160,40 @@ public class TimerFragment extends Fragment {
 
         Stopwatch sw = new Stopwatch(title, time);
         stopwatchDAO.insert(sw);
+    }
+
+    public int countTitle(String title){
+        StopwatchDatabase db = Room.databaseBuilder(getActivity(), StopwatchDatabase.class, "sw-db")
+                .allowMainThreadQueries().build();
+        stopwatchDAO = db.stopwatchDAO();
+        return stopwatchDAO.countTitle(title);
+    }
+
+    public void updateTime(String title, String time){
+        StopwatchDatabase db = Room.databaseBuilder(getActivity(), StopwatchDatabase.class, "sw-db")
+                .allowMainThreadQueries().build();
+        stopwatchDAO = db.stopwatchDAO();
+        String originTime = stopwatchDAO.findTimetoTitle(title);
+        int originTime_S, originTime_M, originTime_H, newTime_S, newTime_M, newTime_H;
+        originTime_S = Integer.parseInt(originTime.substring(6, 8));
+        originTime_M = Integer.parseInt(originTime.substring(3, 5));
+        originTime_H = Integer.parseInt(originTime.substring(0, 2));
+        newTime_S = Integer.parseInt(time.substring(6, 8));
+        newTime_M = Integer.parseInt(time.substring(3, 5));
+        newTime_H = Integer.parseInt(time.substring(0, 2));
+        int second = originTime_S + newTime_S;
+        int minute = originTime_M + newTime_M;
+        int hour = originTime_H + newTime_H;
+        if(second >= 60){
+            minute += 1;
+            second -= 60;
+        }
+        if(minute >= 60){
+            hour += 1;
+            minute -= 60;
+        }
+        String newTime = (hour < 10? "0" + hour : hour) + ":" + (minute < 10? "0" + minute : minute) + ":" + (second < 10? "0" + second : second);
+        stopwatchDAO.updateTIME(title, newTime);
     }
 
     public static class KoreanUtil {

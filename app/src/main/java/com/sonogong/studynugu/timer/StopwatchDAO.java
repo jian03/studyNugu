@@ -16,8 +16,17 @@ public interface StopwatchDAO {
     @Query("SELECT swTime FROM stopwatch")
     List<String> findTime();
 
+    @Query("SELECT swTime FROM stopwatch WHERE swTitle IN(:title)")
+    String findTimetoTitle(String title);
+
     @Query("DELETE FROM stopwatch WHERE swTitle IN(:titles)")
     void findAndDELETE(String titles);
+
+    @Query("SELECT COUNT(*) FROM stopwatch WHERE swTitle = (:title)")
+    int countTitle(String title);
+
+    @Query("UPDATE stopwatch SET swTime = (:time) WHERE swTitle = (:title)")
+    void updateTIME(String title, String time);
 
     @Insert
     void insert(Stopwatch sw);
