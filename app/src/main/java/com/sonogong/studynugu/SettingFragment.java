@@ -19,7 +19,8 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         try{
             v = inflater.inflate(R.layout.fragment_setting, container, false);
-        }catch (InflateException e){
+        } catch (InflateException e){
+
         }
         return v;
     }
