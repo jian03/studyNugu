@@ -25,4 +25,7 @@ public interface DdayDAO {
     @Delete
     void delete(Dday dday);
 
+    @Query("DELETE FROM dday")
+    void deleteAll();
+
 }

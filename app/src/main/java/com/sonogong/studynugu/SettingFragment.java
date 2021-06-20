@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ public class SettingFragment extends Fragment {
         try{
             v = inflater.inflate(R.layout.fragment_setting, container, false);
         } catch (InflateException e){
-
+            Log.e("settingError", "ㅑㅜ림ㅅㄷㄸㅌ데샤");
         }
         return v;
     }

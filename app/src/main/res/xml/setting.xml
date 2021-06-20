@@ -18,11 +18,12 @@
                     android:positiveButtonText="@null" />
 
         </PreferenceCategory>
-        <PreferenceCategory android:title="화면">
+        <PreferenceCategory android:title="데이터">
 
-               <SwitchPreference
-                    android:key="Dark"
-                    android:title="다크모드" />
+               <Preference
+                    android:key="remeveDB"
+                    android:title="데이터 초기화"
+                    android:summary="!주의! 누르자마자 삭제됩니다."/>
 
         </PreferenceCategory>
 
