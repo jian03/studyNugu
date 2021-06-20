@@ -3,14 +3,14 @@
 
         <PreferenceCategory android:title="어플">
                 <SwitchPreference
-                    android:key="@string/TimeNoti"
+                    android:key="TimeNoti"
                     android:title="시간 알리미" />
                 <SwitchPreference
-                    android:key="@string/Lock"
+                    android:key="Lock"
                     android:title="잠금 기능" />
 
                 <ListPreference
-                    android:key="@string/asmr_list"
+                    android:key="asmr_list"
                     android:entries="@array/array_asmr"
                     android:entryValues="@array/array_asmr"
                     android:title="백색소음 / ASMR"
@@ -18,11 +18,12 @@
                     android:positiveButtonText="@null" />
 
         </PreferenceCategory>
-        <PreferenceCategory android:title="화면">
+        <PreferenceCategory android:title="데이터">
 
-               <SwitchPreference
-                    android:key="@string/Dark"
-                    android:title="다크모드" />
+               <Preference
+                    android:key="remeveDB"
+                    android:title="데이터 초기화"
+                    android:summary="!주의! 누르자마자 삭제됩니다."/>
 
         </PreferenceCategory>
 

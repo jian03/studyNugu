@@ -34,4 +34,7 @@ public interface StopwatchDAO {
     @Delete
     void delete(Stopwatch sw);
 
+    @Query("DELETE FROM stopwatch")
+    void deleteAll();
+
 }

@@ -1,79 +1,59 @@
 package com.sonogong.studynugu;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.room.Room;
 
-import java.util.prefs.PreferenceChangeEvent;
+import com.sonogong.studynugu.Dday.DdayDAO;
+import com.sonogong.studynugu.Dday.DdayDatabase;
+import com.sonogong.studynugu.Todo.TodoDAO;
+import com.sonogong.studynugu.Todo.TodoDatabase;
+import com.sonogong.studynugu.timer.Stopwatch;
+import com.sonogong.studynugu.timer.StopwatchDAO;
+import com.sonogong.studynugu.timer.StopwatchDatabase;
 
 public class SettingPreferenceFragment extends PreferenceFragment {
+
     SharedPreferences pref;
     View v;
-
-    private ListPreference asmrPreference;
-    private SwitchPreference darkPreference;
-    private SwitchPreference timePreference;
+    ListPreference asmr;
+    DdayDAO ddayDAO;
+    TodoDAO todoDAO;
+    StopwatchDAO stopwatchDAO;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
-        SwitchPreference onTimeNoti = (SwitchPreference) findPreference(this.getResources().getString(R.string.TimeNoti));
 
-        //시간 알리미 onClickListener
-        onTimeNoti.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object time) {
-                if (onTimeNoti.isChecked()) {
-                    Toast.makeText(onTimeNoti.getContext(), "시간 알리미 OFF", Toast.LENGTH_SHORT).show();
-                    onTimeNoti.setChecked(false);
-                } else {
-                    Toast.makeText(onTimeNoti.getContext(), "시간 알리미 ON", Toast.LENGTH_SHORT).show();
-                    onTimeNoti.setChecked(true);
-                }
-                return false;
+    }
+
+    SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.equals("removeDB")){
+                DdayDatabase dbDday = Room.databaseBuilder(getActivity(), DdayDatabase.class, "dday-db")
+                        .allowMainThreadQueries().build();
+                ddayDAO = dbDday.ddayDAO();
+                ddayDAO.deleteAll();
+                TodoDatabase dbTodo = Room.databaseBuilder(getActivity(), TodoDatabase.class, "todo-db")
+                        .allowMainThreadQueries().build();
+                todoDAO = dbTodo.todoDAO();
+                todoDAO.deleteAll();
+                StopwatchDatabase dbsw = Room.databaseBuilder(getActivity(), StopwatchDatabase.class, "sw-db")
+                        .allowMainThreadQueries().build();
+                stopwatchDAO = dbsw.stopwatchDAO();
+                stopwatchDAO.deleteAll();
             }
-        });
-
-    }
-
-
-
-    public static class SettingsFragment extends PreferenceFragment {
-        public void onCreatePreferences(Bundle saveInstanceState, String rootKey) {
-            SwitchPreference onDark = (SwitchPreference) findPreference(this.getResources().getString(R.string.Dark));
-            SwitchPreference darkPreference = (SwitchPreference) findPreference("@string/Dark");
-            assert darkPreference != null;
-            darkPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (darkPreference.isChecked() && AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
-                    return false;
-                }
-            });
-
         }
-    }
-
+    };
 
     @Override
     public void onDestroyView() {
@@ -84,7 +64,6 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                 parent.removeView(v);
             }
         }
+
     }
 }
-
-
