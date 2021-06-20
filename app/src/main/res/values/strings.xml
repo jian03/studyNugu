@@ -2,4 +2,8 @@
     <string name="app_name">studyNugu</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="TimeNoti"></string>
+    <string name="Lock"></string>
+    <string name="asmr_list"></string>
+    <string name="Dark"></string>
 </resources>
