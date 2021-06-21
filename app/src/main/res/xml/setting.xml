@@ -21,9 +21,9 @@
         <PreferenceCategory android:title="데이터">
 
                <Preference
-                    android:key="remeveDB"
+                    android:key="removeDB"
                     android:title="데이터 초기화"
-                    android:summary="!주의! 누르자마자 삭제됩니다."/>
+                    android:summary="데이터가 싹 다 날아갑니당"/>
 
         </PreferenceCategory>
 
