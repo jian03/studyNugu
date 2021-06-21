@@ -106,14 +106,13 @@ public class SettingPreferenceFragment extends PreferenceFragment {
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
         }else if(title.equals("열공열공 도서관")){
-            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.rain);
+            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.library);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
         }
     }
 
-    void show()
-    {
+    void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DatePickerStyle);
         builder.setTitle("데이터 초기화");
         builder.setMessage("데이터를 초기화하시겠습니까?");
@@ -132,7 +131,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                                 .allowMainThreadQueries().build();
                         stopwatchDAO = dbsw.stopwatchDAO();
                         stopwatchDAO.deleteAll();
-                        Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
         builder.setNegativeButton("아니오",
@@ -144,7 +143,4 @@ public class SettingPreferenceFragment extends PreferenceFragment {
 
         builder.show();
     }
-
-
-
 }
