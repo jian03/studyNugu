@@ -3,26 +3,22 @@ package com.sonogong.studynugu;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 
 import com.sonogong.studynugu.Dday.DdayDAO;
 import com.sonogong.studynugu.Dday.DdayDatabase;
 import com.sonogong.studynugu.Todo.TodoDAO;
 import com.sonogong.studynugu.Todo.TodoDatabase;
-import com.sonogong.studynugu.timer.Stopwatch;
 import com.sonogong.studynugu.timer.StopwatchDAO;
 import com.sonogong.studynugu.timer.StopwatchDatabase;
 
@@ -62,7 +58,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
 
     void show()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialog);
         builder.setTitle("AlertDialog Title");
         builder.setMessage("AlertDialog Content");
         builder.setPositiveButton("예",
