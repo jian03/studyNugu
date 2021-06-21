@@ -3,11 +3,13 @@ package com.sonogong.studynugu;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.sonogong.studynugu.Todo.TodoDAO;
 import com.sonogong.studynugu.Todo.TodoDatabase;
 import com.sonogong.studynugu.timer.StopwatchDAO;
 import com.sonogong.studynugu.timer.StopwatchDatabase;
+
 
 public class SettingPreferenceFragment extends PreferenceFragment {
 
@@ -40,7 +43,9 @@ public class SettingPreferenceFragment extends PreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        show();
+        if(preference.getKey().equals("removeDB")){
+            show();
+        }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
@@ -58,9 +63,9 @@ public class SettingPreferenceFragment extends PreferenceFragment {
 
     void show()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialog);
-        builder.setTitle("AlertDialog Title");
-        builder.setMessage("AlertDialog Content");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DatePickerStyle);
+        builder.setTitle("데이터 초기화");
+        builder.setMessage("데이터를 초기화하시겠습니까?");
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -85,7 +90,10 @@ public class SettingPreferenceFragment extends PreferenceFragment {
 
                     }
                 });
+
         builder.show();
     }
+
+
 
 }
